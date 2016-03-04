@@ -1,0 +1,30 @@
+<meta charset="UTF-8">
+<div class="container" ng-controller="editArticleCtrl">
+
+	<form class="form-horizontal">
+		<div class="form-group">	
+			<div class="col-md-12"><input type="text" class="form-control" ng-model="curArticle.title" placeholder="标题：我的第一篇文章"/></div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-5"><input class="form-control" placeholder="空间名"></div>
+			<div class="col-md-7"> 
+				<tags-input ng-model="newLabels"  display-property="labelName" placeholder="标签" add-from-autocomplete-only="true" class="customTagsInput">
+					 <auto-complete source="loadAvailableLabels()" min-length="0" debounce-delay="0" max-results-to-show="10"></auto-complete>
+				</tags-input></div>
+		
+		</div>
+		<div class="form-group">
+			<div class="col-md-12" text-angular ng-model="curArticle.content"></div>
+		</div>
+		<div class="form-group" >
+			<div class="col-md-12">
+				<button type="button" class="btn btn-info" ng-click="draft()">存稿</button> 
+				<button type="reset" class="btn btn-warning" ng-click="cancel()">取消</button>  
+				<button type="submit"class="btn btn-success pull-right" ng-click="add()">发布文章</button>
+			
+				
+			</div>
+		</div>
+	</form>
+
+</div>
