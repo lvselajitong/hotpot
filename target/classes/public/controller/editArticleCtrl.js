@@ -1,62 +1,47 @@
-app.controller("editArticleCtrl",["$scope","$http","$location","DataStore",function($scope,$http,$location,DataStore){
-	var initScope;
+app.controller("editArticleCtrl",["$scope","$http","$location","ArticleService","DataStore","UserIdentity","CategoryService",function($scope,$http,$location,ArticleService,DataStore,UserIdentity,CategoryService){
+	var initScope,getAllCategories;
 	initScope = function(){
 		if(DataStore.selectedArticle.length !== 0){
 			$scope.curArticle = DataStore.selectedArticle;
 		}
+		
+	};
+	getAllCategories = function(){
+		CategoryService.getAllCategories().then(function(res){
+			if(res != undefined){
+				if(res.status === 200 && res.data.success){
+					$scope.categories = res.data.data;
+				}else{
+					notify("load categories error.","danger",true);
+				}
+			}
+		});
 	};
 	$scope.add = function(){
-		
+		var curDate = new Date();
 		if($scope.curArticle.title!== undefined){
-			$http({
-				method : 'POST',
-				url : '/articles',
-				params : {
-					title : $scope.curArticle.title,
-					content:$scope.curArticle.content,
-					postStatus:"Publish"
-				},
-				headers : {
-					'Content-Type' : 'application/x-www-form-urlencoded',
-				}
-			}).then(function(response) {
-				if (response !== undefined) {
-					if (response.status === 200 && response.data.success) {
-						$location.path("articles");
+			ArticleService.addArticle($scope.curArticle.title,$scope.curArticle.content,UserIdentity.get().id,"Publish",$scope.selectedCategory).then(function(res){
+				if (res !== undefined) {
+					if (res.status === 200 && res.data.success) {
+						DataStore.selectedAuth = res.data.data;  
+						$location.path("/manageArticles");
+					}else{
+						console.log("add failed");
 					}
-				}
-			}, function errorCallback(response) {
-				notify("HTTP error! <br>" + "Error Status: " + response.status + '<br> Status Text:' + response.response, 'danger', true);
-				if (response.data !== undefined && response.data !== null) {
-					notify("Fail to query all accounts! <p>errorcode:" + response.data.errorCode + '<br> message:' + response.data.message + '<br>exception: ' + response.data.exception, 'danger', true);
 				}
 			});
 		}
 	};
 	$scope.draft = function(){
-		
+		var curDate = new Date();
 		if($scope.curArticle.title!== undefined){
-			$http({
-				method : 'POST',
-				url : '/articles',
-				params : {
-					title : $scope.curArticle.title,
-					content:$scope.curArticle.content,
-					postStatus:"Draft"
-				},
-				headers : {
-					'Content-Type' : 'application/x-www-form-urlencoded',
-				}
-			}).then(function(response) {
-				if (response !== undefined) {
-					if (response.status === 200 && response.data.success) {
-						$location.path("articles");
+			ArticleService.addArticle($scope.curArticle.title,$scope.curArticle.content,UserIdentity.get().id,"Draft").then(function(res){
+				if (res !== undefined) {
+					if (res.status === 200 && res.data.success) {
+						$location.path("/manageArticles");
+					}else{
+						console.log("draft failed");
 					}
-				}
-			}, function errorCallback(response) {
-				notify("HTTP error! <br>" + "Error Status: " + response.status + '<br> Status Text:' + response.response, 'danger', true);
-				if (response.data !== undefined && response.data !== null) {
-					notify("Fail to query all accounts! <p>errorcode:" + response.data.errorCode + '<br> message:' + response.data.message + '<br>exception: ' + response.data.exception, 'danger', true);
 				}
 			});
 		}
@@ -69,4 +54,5 @@ app.controller("editArticleCtrl",["$scope","$http","$location","DataStore",funct
 		$location.path("articles");
 	};
 	initScope();
+	getAllCategories();
 }]);

@@ -1,24 +1,32 @@
-app.controller("manageArticlesCtrl",["$scope","$http","$location","DataStore","ArticleService",function($scope,$http,$location,DataStore,ArticleService){
-	var getAllArticles;
+app.controller("manageArticlesCtrl",["$scope","$http","$location","DataStore","ArticleService","UserIdentity",function($scope,$http,$location,DataStore,ArticleService,UserIdentity){
+	var getArticlesByAuthId;
 	$scope.showSelect = false;
 	$scope.selectedCollection = [];
-	getAllArticles = function(){
-		$http({
-			method : 'GET',
-			url : '/articles',
-			headers : {
-				'Content-Type' : 'application/x-www-form-urlencoded',
-			}
-		}).then(function(res){
-			if (res !== undefined) {
-				if (res.status === 200 && res.data.success) {
-					$scope.articles = res.data.data;
-					angular.forEach($scope.articles,function(art){
-						art.outline = art.content.substring(0,50);
-					});
+	getArticlesByAuthId = function(){
+		if(DataStore.selectedAuth.length === 0){
+			$http({
+				method : 'GET',
+				url : '/article/' + UserIdentity.get().id,
+				headers : {
+					'Content-Type' : 'application/x-www-form-urlencoded',
 				}
-			}
-		});
+			}).then(function(res){
+				if (res !== undefined) {
+					if (res.status === 200 && res.data.success) {
+						$scope.articles = res.data.data.articles;
+						angular.forEach($scope.articles,function(art){
+							art.outline = art.content.substring(0,50);
+						});
+					}
+				}
+			});
+		} else {
+			$scope.articles = DataStore.selectedAuth.articles;
+			angular.forEach($scope.articles,function(art){
+				art.outline = art.content.substring(0,50);
+			});
+		}
+		
 	};
 	
 	$scope.addNewArticle = function() {
@@ -47,7 +55,7 @@ app.controller("manageArticlesCtrl",["$scope","$http","$location","DataStore","A
 	};
 	$scope.deleteArticles = function(){
 		angular.forEach($scope.selectedCollection,function(item){
-			ArticleService.deleteById(item.id).then(function(res){
+			ArticleService.deleteById(item.id,UserIdentity.get().id).then(function(res){
 				if(res !== undefined){
 					if(res.status === 200 && res.data.success) {
 						for(var i=0;i<$scope.articles.length;i++){
@@ -64,5 +72,5 @@ app.controller("manageArticlesCtrl",["$scope","$http","$location","DataStore","A
 		});
 		$scope.selectedCollection = [];
 	};
-	getAllArticles();
+	getArticlesByAuthId();
 }]);

@@ -1,8 +1,8 @@
 server:
-  port: 9090
+  port: 9089
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/mycms
+    url: jdbc:mysql://localhost:3306/mycms?characterEncoding=UTF-8
     username: root
     password: 
     driverClassName: com.mysql.jdbc.Driver

@@ -1,8 +1,10 @@
 package com.mycms.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.mycms.exception.ArticleNotFoundException;
+import com.mycms.model.Account;
 import com.mycms.model.Article;
 import com.mycms.model.Comment;
 
@@ -17,7 +19,7 @@ public interface ArticleService {
 
 	Article update(Article article) throws ArticleNotFoundException;
 
-	Article add(String title,String content,String status)throws ArticleNotFoundException; 
+	Article add(String title,String content,String status,Date date)throws ArticleNotFoundException; 
 	
 	void deleteById(long id);
 	

@@ -18,6 +18,8 @@ app.config(
 			}).when('/profile',{
 				templateUrl: 'view/profile.html',
 				controller:'profileCtrl'
+			}).when('/articleDetail/:articleId',{
+				templateUrl: 'view/postDetail.html',
 			}).otherwise({
 				templateUrl: 'view/dashboard.html',
 				controller:'mainCtrl'

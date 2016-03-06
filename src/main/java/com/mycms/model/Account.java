@@ -1,5 +1,8 @@
 package com.mycms.model;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 @Entity
@@ -15,10 +18,15 @@ public class Account implements Serializable{
 	protected String password;
 	@Column(name = "email")
 	protected String email;
+	
+	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	protected Set<Article> articles = new HashSet<Article>();
+	
 	public Account() {
 
 	}
 
+	
 	public Account(String name, String password, String email) {
 		this.name = name;
 		this.password = password;
@@ -55,6 +63,15 @@ public class Account implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	public Set<Article> getArticles() {
+		return articles;
+	}
+
+	public void setArticles(Set<Article> articles) {
+		this.articles = articles;
+	}
+
+
 
 
 }

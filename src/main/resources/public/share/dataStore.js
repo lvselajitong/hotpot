@@ -1,6 +1,8 @@
 app.factory('DataStore', function () {
 	var selectedArticle = [];
+	var selectedAuth = [];
 	return {
-		selectedArticle : selectedArticle
+		selectedArticle : selectedArticle,
+		selectedAuth : selectedAuth
 	};
 });

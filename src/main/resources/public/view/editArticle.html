@@ -6,7 +6,7 @@
 			<div class="col-md-12"><input type="text" class="form-control" ng-model="curArticle.title" placeholder="标题：我的第一篇文章"/></div>
 		</div>
 		<div class="form-group">
-			<div class="col-md-5"><input class="form-control" placeholder="空间名"></div>
+			<div class="col-md-5"><select ng-model="selectedCategory" class="form-control"><option ng-repeat="category in categories">{{category.categoryName}}</select></div>
 			<div class="col-md-7"> 
 				<tags-input ng-model="newLabels"  display-property="labelName" placeholder="标签" add-from-autocomplete-only="true" class="customTagsInput">
 					 <auto-complete source="loadAvailableLabels()" min-length="0" debounce-delay="0" max-results-to-show="10"></auto-complete>

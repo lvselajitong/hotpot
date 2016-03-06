@@ -21,8 +21,7 @@ public class Article implements Serializable {
 	
 	@Column(name="status",nullable = false)
 	protected String status;
-	
-	
+
 	@Column(name = "comment_status")
 	protected String commentStatus;
 	
@@ -32,15 +31,15 @@ public class Article implements Serializable {
 	@Column(name = "modifed_date")
 	protected Date modifiedDate;	
 	
-	@OneToMany
-	protected List<Comment> comments;
+	
 	public Article() {
 
 	}
-	public Article(String title,String content,String status){
+	public Article(String title,String content, String status, Date date){
 		this.title = title;
 		this.content = content;
 		this.status = status;
+		this.postDate = date;
 	}
 	public Long getId() {
 		return id;
@@ -59,12 +58,6 @@ public class Article implements Serializable {
 	}
 	public void setContent(String content) {
 		this.content = content;
-	}
-	public List<Comment> getComments() {
-		return comments;
-	}
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
 	}
 	public Date getPostDate() {
 		return postDate;
@@ -90,5 +83,6 @@ public class Article implements Serializable {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
 
 }

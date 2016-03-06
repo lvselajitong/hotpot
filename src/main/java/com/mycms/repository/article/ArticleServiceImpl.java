@@ -1,5 +1,6 @@
 package com.mycms.repository.article;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -11,6 +12,7 @@ import org.springframework.util.StringUtils;
 import com.google.common.collect.Lists;
 import com.mycms.exception.ArticleDuplicateException;
 import com.mycms.exception.ArticleNotFoundException;
+import com.mycms.model.Account;
 import com.mycms.model.Article;
 import com.mycms.model.Comment;
 import com.mycms.service.ArticleService;
@@ -44,9 +46,9 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public Article add(String title, String content, String status) throws ArticleNotFoundException {
+	public Article add(String title, String content, String status, Date date) throws ArticleNotFoundException {
 		if(!StringUtils.isEmpty(title)&& articleRepository.findByTitle(title)== null){
-			Article at = new Article(title,content,status);
+			Article at = new Article(title,content,status,date);
 			at = articleRepository.save(at);
 			return at;
 		}else{
@@ -58,7 +60,6 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public void deleteById(long id) {
 		articleRepository.delete(id);
-
 	}
 
 	@Override

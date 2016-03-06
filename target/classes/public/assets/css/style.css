@@ -139,3 +139,11 @@ body > .container {
 	box-shadow:2px 2px 3px #aaaaaa;
 	margin:10px;
 }
+.postItem {
+	background:white;
+	box-shadow:2px 2px 3px #ccc;
+	margin-bottom:15px;
+}
+ul li{
+	list-style:none;
+}
